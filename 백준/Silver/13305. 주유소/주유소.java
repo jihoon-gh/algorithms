@@ -24,7 +24,7 @@ public class Main {
         }
 
         int price = 2000000000;
-        int result = 0;
+        long result = 0;
         for(int i = 0 ; i < n-1; i++)
         {
             price = Math.min(price, cities[i]);
