@@ -1,46 +1,41 @@
-import java.io.*;
-import java.math.*;
 import java.util.*;
-import java.util.stream.Collectors;
+import java.io.*;
 
 public class Main {
-	
 	static class Pair{
-		int value;
-		int index;
+		int val;
+		int idx;
 		public Pair(int a, int b) {
-			value = a;
-			index = b;
+			val = a;
+			idx = b;
 		}
 	}
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int n = Integer.parseInt(br.readLine());
-		int[] arr = new int[n];
+		Stack<Pair> st = new Stack<>();
 		int[] ans = new int[n];
-		StringTokenizer st = new StringTokenizer(br.readLine());
+		StringTokenizer s = new StringTokenizer(br.readLine());
 		for(int i = 0; i < n; i++) {
-			arr[i] = Integer.parseInt(st.nextToken());
-		}
-		Stack<Pair> mono = new Stack<>();
-		for(int i = 0; i < n; i++) {
-			Pair p = new Pair(arr[i], i);
-			
-			while(!mono.isEmpty()) {
-				if(mono.peek().value > p.value) {
-					ans[i] = mono.peek().index;
-					mono.add(p);
-					break;
-				}
-				else mono.pop();
+			int k = Integer.parseInt(s.nextToken());
+			while(!st.isEmpty() && st.peek().val < k) {
+				Pair tmp = st.pop();
+				ans[tmp.idx] = st.isEmpty() ? 0 : st.peek().idx + 1;
 			}
-			if(mono.isEmpty()) {
-				ans[i] = -1;
-				mono.add(p);
-			}
+			st.add(new Pair(k, i));
 		}
-		for(int i = 0; i < n; i++) {
-			System.out.print((ans[i]+ 1) + " ");
+		List<Pair> plist = new ArrayList<>();
+		while(!st.isEmpty()) {
+			plist.add(st.pop());
+		}
+		for(int i = 0; i < plist.size() - 1; i++) {
+			Pair now = plist.get(i);
+			Pair next = plist.get(i + 1);
+			ans[now.idx] = next.idx + 1;
+		}
+		for(int num : ans) {
+			System.out.print(num + " ");
 		}
 	}
 }
+
